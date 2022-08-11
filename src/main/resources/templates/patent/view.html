@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">특허 목록</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">발명의 명칭 (국문)</th>
+            <th scope="col">발명의 명칭 (영문)</th>
+            <th scope="col">최초 작성일자</th>
+            <th scope="col">마지막 수정인</th>
+            <th scope="col">작업</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>지연이 큰 네트워크들에 대한 TCP 혼잡 제어</td>
+            <td>TCP CONGESTION CONTROL FOR LARGE LATENCY NETWORKS</td>
+            <td>2022-08-02</td>
+            <td>이준서</td>
+            <td>
+                <div class="btn-group-sm" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-outline-success">출력</button>
+                    <button type="button" class="btn btn-outline-primary">편집</button>
+                    <button type="button" class="btn btn-outline-danger">삭제</button>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>placeholder</td>
+            <td>irrelevant</td>
+            <td>visual</td>
+            <td>layout</td>
+            <td>text</td>
+        </tr>
+        <tr>
+            <td>data</td>
+            <td>rich</td>
+            <td>dashboard</td>
+            <td>tabular</td>
+            <td>text</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>
