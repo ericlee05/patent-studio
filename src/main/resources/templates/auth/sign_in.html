@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Patent Studio - 로그인</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/auth.css" rel="stylesheet">
+</head>
+<body class="text-center">
+
+<main class="form-signin">
+    <form action="/auth/sign-in" method="post">
+        <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+        <h1 class="h3 mb-3 fw-normal">Patent Studio</h1>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="로그인 아이디" name="loginId">
+            <label for="floatingInput">Login ID</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="비밀번호" name="password">
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
+        <a class="btn btn-link" href="/sign-up">회원가입</a>
+        <p class="mt-5 mb-3 text-muted">&copy; Patent Studio 2022</p>
+    </form>
+</main>
+
+
+
+</body>
+
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+<script th:if="${message != null}" th:inline="javascript">
+    /*<![CDATA[*/
+    alert([[${message}]]);
+    /*]]>*/
+</script>
+</html>

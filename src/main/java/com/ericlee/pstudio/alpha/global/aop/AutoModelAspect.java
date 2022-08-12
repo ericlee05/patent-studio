@@ -1,6 +1,7 @@
 package com.ericlee.pstudio.alpha.global.aop;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 /**
  * MVC Controller의 Model에 자동으로 필요한 정보(사용자 정보 등..)를 사전으로 맵핑해 줍니다.
  */
+@Log4j2
 @RequiredArgsConstructor
 @Aspect
 @Component
