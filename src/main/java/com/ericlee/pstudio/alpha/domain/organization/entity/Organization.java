@@ -1,5 +1,6 @@
 package com.ericlee.pstudio.alpha.domain.organization.entity;
 
+import com.ericlee.pstudio.alpha.domain.patent.entity.Patent;
 import com.ericlee.pstudio.alpha.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +26,19 @@ public class Organization {
 
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users;
+    public void addUser(User user) {
+        users.add(user);
+    }
+    public void removeUser(User user) {
+        users.remove(user);
+    }
+
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Patent> patents;
+    public void addPatent(Patent patent) {
+        patents.add(patent);
+    }
+    public void deletePatent(Patent patent) {
+        patents.remove(patent);
+    }
 }
