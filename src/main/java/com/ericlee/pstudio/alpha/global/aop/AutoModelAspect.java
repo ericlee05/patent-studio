@@ -15,7 +15,7 @@ import org.springframework.ui.Model;
 @Component
 public class AutoModelAspect {
     @Around("@annotation(org.springframework.web.bind.annotation.GetMapping)")
-    public void injectUserInfoIntoModel(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object injectUserInfoIntoModel(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] arguments = joinPoint.getArgs();
         for(int i = 0; i < arguments.length; i++) {
             if(arguments[i].getClass().isAssignableFrom(Model.class)) {
@@ -26,6 +26,6 @@ public class AutoModelAspect {
             }
         }
 
-        joinPoint.proceed(arguments);
+        return joinPoint.proceed(arguments);
     }
 }
