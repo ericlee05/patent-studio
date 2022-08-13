@@ -31,9 +31,9 @@
             <td th:text="${patent.getLastModifierName()}">이준서</td>
             <td>
                 <div class="btn-group-sm" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-outline-success">출력</button>
-                    <button type="button" class="btn btn-outline-primary">편집</button>
-                    <button type="button" class="btn btn-outline-danger">삭제</button>
+                    <a class="btn btn-outline-success" th:href="|/patents/${patent.getPatentId()}/hwp|">출력</a>
+                    <a class="btn btn-outline-primary" th:href="|/patents/editor/${patent.getPatentId()}|">편집</a>
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#patentDeleteionModal" th:data-bs-id="${patent.patentId}" th:data-bs-name="${patent.nameWithKorean}">삭제</button>
                 </div>
             </td>
         </tr>
