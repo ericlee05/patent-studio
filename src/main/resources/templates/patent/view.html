@@ -4,8 +4,8 @@
     <h1 class="h2">특허 목록</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#patentModal" class="btn btn-sm btn-outline-secondary">새 특허</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">내보내기</button>
         </div>
     </div>
 </div>
@@ -22,11 +22,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>지연이 큰 네트워크들에 대한 TCP 혼잡 제어</td>
-            <td>TCP CONGESTION CONTROL FOR LARGE LATENCY NETWORKS</td>
-            <td>2022-08-02</td>
-            <td>이준서</td>
+
+        <!--@thymesVar id="patents" type="java.util.List<com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.PatentResponse>"-->
+        <tr th:each="patent : ${patents}">
+            <td th:text="${patent.nameWithKorean}" th:onclick="|window.location.href = '/patents/' + ${patent.patentId}|">지연이 큰 네트워크들에 대한 TCP 혼잡 제어</td>
+            <td th:text="${patent.nameWithEnglish}" th:onclick="|window.location.href = '/patents/' + ${patent.patentId}|">TCP CONGESTION CONTROL FOR LARGE LATENCY NETWORKS</td>
+            <td th:text="${patent.getLastModified()}">2022-08-02</td>
+            <td th:text="${patent.getLastModifierName()}">이준서</td>
             <td>
                 <div class="btn-group-sm" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-outline-success">출력</button>
@@ -34,20 +36,6 @@
                     <button type="button" class="btn btn-outline-danger">삭제</button>
                 </div>
             </td>
-        </tr>
-        <tr>
-            <td>placeholder</td>
-            <td>irrelevant</td>
-            <td>visual</td>
-            <td>layout</td>
-            <td>text</td>
-        </tr>
-        <tr>
-            <td>data</td>
-            <td>rich</td>
-            <td>dashboard</td>
-            <td>tabular</td>
-            <td>text</td>
         </tr>
         </tbody>
     </table>
