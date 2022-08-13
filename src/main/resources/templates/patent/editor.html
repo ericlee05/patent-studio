@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+<!--@thymesVar id="patent" type="com.ericlee.pstudio.alpha.domain.patent.entity.Patent"-->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-9">
+                <label for="koreanName" class="form-label">발명의 명칭 (국문)</label>
+                <input id="koreanName" class="form-control form-control-lg" th:value="${patent.getKoreanName()}" placeholder="국문 이름"></input>
+                <br>
+                <label for="englishName" class="form-label">발명의 명칭 (영문)</label>
+                <input id="englishName" class="form-control form-control-lg" th:value="${patent.getEnglishName()}" placeholder="영문 이름"></input>
+                <br>
+            </div>
+            <div class="col align-self-end" style="text-align: end">
+                <button class="btn btn-outline-primary" onclick="">이름 변경</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="alert alert-warning" role="alert">
+    나가기 전, 반드시 저장 버튼을 눌러 주세요!
+</div>
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-category-claim" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-category-claim" aria-selected="true">청구항</button>
+        <button class="nav-link" id="nav-category-description" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-category-description" aria-selected="false">발명의 설명</button>
+        <button class="nav-link" id="nav-category-drawing" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-category-drawing" aria-selected="false">도면</button>
+        <button class="nav-link" id="nav-category-summary" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-category-summary" aria-selected="false">요약서</button>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="editor-category-claim" role="tabpanel" aria-labelledby="nav-category-claim" th:include="patent/editors/editor_claim :: editor">...</div>
+    <div class="tab-pane fade" id="editor-category-description" role="tabpanel" aria-labelledby="nav-category-description"  th:include="patent/editors/editor_description :: editor">...</div>
+    <div class="tab-pane fade" id="editor-category-drawing" role="tabpanel" aria-labelledby="nav-category-drawing" th:include="patent/editors/editor_drawing :: editor">...</div>
+    <div class="tab-pane fade" id="editor-category-summary" role="tabpanel" aria-labelledby="nav-category-summary" th:include="patent/editors/editor_summary :: editor">...</div>
+</div>
+<script>
+    window.onbeforeunload = function() { return "Would you really like to close your browser?"; }
+</script>
+</html>
