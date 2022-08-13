@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+<!--@thymesVar id="patent" type="com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.PatentResponse"-->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div>
+        <h1 class="h2" th:text="${patent.nameWithKorean}"></h1>
+        <h4 class="h4" style="color: gray" th:text="${patent.nameWithEnglish}"></h4>
+    </div>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a class="btn btn-outline-success" th:href="|/patents/${patent.getPatentId()}/hwp|">출력</a>
+            <a class="btn btn-outline-primary" th:href="|/patents/${patent.getPatentId()}/editor|">편집</a>
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#patentDeleteionModal" th:data-bs-id="${patent.patentId}" th:data-bs-name="${patent.nameWithKorean}">삭제</button>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h2 class="h3">개요</h2>
+        </div>
+        <div class="col">
+            <h2 class="h3">청구항 목록</h2>
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Cras justo odio
+                    </div>
+                    <span class="badge bg-primary rounded-pill">14</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Cras justo odio
+                    </div>
+                    <span class="badge bg-primary rounded-pill">14</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Cras justo odio
+                    </div>
+                    <span class="badge bg-primary rounded-pill">14</span>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <h2 class="h3">대표도</h2>
+        </div>
+        <div class="col">
+            <h2 class="h3">무언가..?</h2>
+        </div>
+    </div>
+</div>
+
+</html>

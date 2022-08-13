@@ -1,6 +1,10 @@
 package com.ericlee.pstudio.alpha.domain.patent.service;
 
+import com.ericlee.pstudio.alpha.domain.patent.entity.Patent;
+import com.ericlee.pstudio.alpha.domain.patent.exception.PatentNotFoundException;
+import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.PatentDetailResponse;
 import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.PatentResponse;
+import com.ericlee.pstudio.alpha.domain.patent.repository.PatentRepository;
 import com.ericlee.pstudio.alpha.domain.user.entity.User;
 import com.ericlee.pstudio.alpha.domain.user.exception.UnauthorizedUserException;
 import com.ericlee.pstudio.alpha.domain.user.facade.UserFacade;
@@ -17,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class PatentViewService {
+    private final PatentRepository patentRepository;
     private final DateUtil dateUtil;
     private final UserFacade userFacade;
 
@@ -40,4 +45,17 @@ public class PatentViewService {
         model.addAttribute("patents", patents);
     }
 
+    public void patentDetail(Long patentId, Model model) {
+        Patent patent = patentRepository.findById(patentId)
+                .orElseThrow(PatentNotFoundException::new);
+
+        PatentDetailResponse response = PatentDetailResponse.builder()
+                .patentId(patent.getId())
+                .nameWithKorean(patent.getKoreanName())
+                .nameWithEnglish(patent.getEnglishName())
+                // TODO("내용 추가하기!")
+                .build();
+        model.addAttribute("title", patent.getKoreanName());
+        model.addAttribute("patent", response);
+    }
 }
