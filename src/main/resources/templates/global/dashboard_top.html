@@ -4,12 +4,14 @@
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
+  <!--@thymesVar id="user_session" type="com.ericlee.pstudio.alpha.domain.user.presentation.dto.response.UserSignInStatusResponse"-->
   <div class="navbar-nav" style="flex-direction: row">
     <div class="nav-item">
-      <a class="nav-link px-3" href="/settings" style="color: white">님, 어서오세요!</a>
+      <a class="nav-link px-3" href="/settings" style="color: white" th:text="|${user_session.userName}님, 어서오세요!|">님, 어서오세요!</a>
     </div>
     <div class="nav-item">
-      <a class="nav-link px-3" href="#">로그아웃</a>
+      <a class="nav-link px-3" href="/auth/logout">로그아웃</a>
     </div>
   </div>
 </html>
