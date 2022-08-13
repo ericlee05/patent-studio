@@ -2,6 +2,7 @@ package com.ericlee.pstudio.alpha.domain.patent.presentation;
 
 import com.ericlee.pstudio.alpha.domain.patent.exception.PatentNotFoundException;
 import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.request.PatentCreationRequest;
+import com.ericlee.pstudio.alpha.domain.patent.service.PatentEditorService;
 import com.ericlee.pstudio.alpha.domain.patent.service.PatentSimpleService;
 import com.ericlee.pstudio.alpha.domain.patent.service.PatentViewService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 public class PatentController {
     private final PatentViewService patentViewService;
     private final PatentSimpleService patentSimpleService;
+    private final PatentEditorService patentEditorService;
 
     @GetMapping
     public String patentDashboard(Model model) {
@@ -35,9 +37,8 @@ public class PatentController {
 
     @GetMapping("/{patent-id}")
     public String patentDetail(@PathVariable("patent-id") Long patentId, Model model) {
-
-
-        model.addAttribute("template", "patent/detailViewer");
+        patentViewService.patentDetail(patentId, model);
+        model.addAttribute("template", "patent/view_detail");
         return "global/dashboard_frame";
     }
 
@@ -51,6 +52,13 @@ public class PatentController {
         patentViewService.patentDashboard(model);
         model.addAttribute("template", "patent/view");
         model.addAttribute("message", ex.getMessage());
+        return "global/dashboard_frame";
+    }
+
+    @GetMapping("/{patent-id}/editor")
+    public String editor(@PathVariable("patent-id") Long patentId, Model model) {
+        patentEditorService.loadEditor(patentId, model);
+        model.addAttribute("template", "patent/editor");
         return "global/dashboard_frame";
     }
 
