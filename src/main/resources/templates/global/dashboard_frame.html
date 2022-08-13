@@ -46,11 +46,22 @@
   </div>
 </div>
 
+<!-- Patent Modal -->
+<div th:replace="modal/patent_creation :: modal"></div>
+<div th:replace="modal/patent_deletion :: modal"></div>
+
+<!-- Alert Modal -->
+<div class="alert alert-primary" role="alert" th:if="${message != null}" th:text="${message}"></div>
 
 <script src="/static/js/bootstrap.bundle.min.js"></script>
 
 <script src="/static/js/feather.min.js"></script>
 <script src="/static/js/Chart.min.js"></script>
 <script src="/static/js/dashboard.js"></script>
+<script th:if="${message != null}" th:inline="javascript">
+  /*<![CDATA[*/
+  alert([[${message}]]);
+  /*]]>*/
+</script>
 </body>
 </html>

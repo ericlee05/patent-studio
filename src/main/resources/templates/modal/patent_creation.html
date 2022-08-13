@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="modal" id="patentModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">새로운 특허 만들기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/patents" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name_korean" class="form-label">발명의 명칭 (국문)</label>
+                        <input id="name_korean" placeholder="국문 명칭" type="text" class="form-control" name="koreanName">
+                        <div class="form-text">명세서 작성에 사용될 국문 명칭입니다</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name_english" class="form-label">발명의 명칭 (영문)</label>
+                        <input id="name_english" placeholder="영문 명칭" type="text" class="form-control" name="englishName">
+                        <div class="form-text">명세서 작성에 사용될 영문 명칭입니다</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="submit" class="btn btn-primary">생성</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</html>
