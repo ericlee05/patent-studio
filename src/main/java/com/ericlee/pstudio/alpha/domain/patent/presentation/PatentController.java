@@ -2,6 +2,7 @@ package com.ericlee.pstudio.alpha.domain.patent.presentation;
 
 import com.ericlee.pstudio.alpha.domain.patent.exception.PatentNotFoundException;
 import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.request.PatentCreationRequest;
+import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.PatentResponse;
 import com.ericlee.pstudio.alpha.domain.patent.service.PatentEditorService;
 import com.ericlee.pstudio.alpha.domain.patent.service.PatentSimpleService;
 import com.ericlee.pstudio.alpha.domain.patent.service.PatentViewService;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -28,6 +30,12 @@ public class PatentController {
         model.addAttribute("template", "patent/view");
 
         return "global/dashboard_frame";
+    }
+
+    @ResponseBody
+    @GetMapping("/json")
+    public List<PatentResponse> getPatentsWithJson() {
+        return patentViewService.getPatentsResponse();
     }
 
     @PostMapping

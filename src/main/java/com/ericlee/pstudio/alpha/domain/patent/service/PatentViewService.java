@@ -27,6 +27,11 @@ public class PatentViewService {
 
     @Transactional(readOnly = true)
     public void patentDashboard(Model model) {
+        model.addAttribute("patents", getPatentsResponse());
+    }
+
+    @Transactional(readOnly = true)
+    public List<PatentResponse> getPatentsResponse() {
         User user = userFacade.queryCurrentUser(true)
                 .orElseThrow(UnauthorizedUserException::new);
 
@@ -42,7 +47,7 @@ public class PatentViewService {
                         .build())
                 .collect(Collectors.toList());
 
-        model.addAttribute("patents", patents);
+        return patents;
     }
 
     public void patentDetail(Long patentId, Model model) {

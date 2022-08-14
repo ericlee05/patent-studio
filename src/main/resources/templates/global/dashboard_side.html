@@ -29,32 +29,35 @@
         <span data-feather="plus-circle"></span>
     </button>
 </h6>
-<ul class="nav flex-column mb-2">
-    <li class="nav-item">
+<ul id="patent-side-list" class="nav flex-column mb-2">
+    <li id="patent-view-item-source" class="nav-item" style="content-visibility: hidden; visibility: hidden">
         <a class="nav-link" href="#">
             <span data-feather="file-text"></span>
-            Current month
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <span data-feather="file-text"></span>
-            Last quarter
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <span data-feather="file-text"></span>
-            Social engagement
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <span data-feather="file-text"></span>
-            Year-end sale
         </a>
     </li>
 </ul>
+<script>
+    let patentItems = document.getElementById("patent-side-list")
+    let sourceItem = document.getElementById("patent-view-item-source")
+
+    function newPatent(patent) {
+        let newItem = document.createElement("li")
+        patentItems.appendChild(newItem)
+        console.log(newItem)
+
+        newItem.className = "nav-item"
+        newItem.innerHTML = sourceItem.innerHTML
+        newItem.querySelector(".nav-link").setAttribute("href", "/patents/" + patent.patentId)
+        newItem.querySelector(".nav-link").innerHTML += patent.nameWithKorean
+    }
+
+    axios.get('/patents/json').then((res) => {
+        console.log(res)
+        res.data.forEach((patent) => {
+            newPatent(patent)
+        })
+    })
+</script>
 
 
 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
