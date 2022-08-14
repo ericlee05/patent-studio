@@ -40,7 +40,7 @@ public class PatentViewService {
                         .patentId(patent.getId())
                         .nameWithKorean(patent.getKoreanName())
                         .nameWithEnglish(patent.getEnglishName())
-                        .lastModified(dateUtil.yearMonthDate(patent.getDetail().getLastModified()))
+                        .lastModified(dateUtil.yearMonthDateWithTime(patent.getDetail().getLastModified()))
                         .lastModifierName(Optional.ofNullable(patent.getDetail().getLastModifier()).orElse(
                                 User.builder().loginId("-").build()
                         ).getLoginId())
