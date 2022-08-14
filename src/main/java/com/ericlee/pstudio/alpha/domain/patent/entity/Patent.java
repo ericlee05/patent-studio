@@ -1,6 +1,9 @@
 package com.ericlee.pstudio.alpha.domain.patent.entity;
 
 import com.ericlee.pstudio.alpha.domain.organization.entity.Organization;
+import com.ericlee.pstudio.alpha.domain.patent.exception.PatentComponentNotFoundException;
+import com.ericlee.pstudio.alpha.domain.patent.type.MultiComponentType;
+import com.ericlee.pstudio.alpha.domain.patent.type.SingleComponentType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,7 +44,18 @@ public class Patent {
 
     @OneToMany(mappedBy = "id.patent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SingleComponent> singleComponents;
+    public SingleComponent getSingleComponentByType(SingleComponentType type) {
+        return singleComponents.stream().filter(it -> it.getId().getSingleComponentType() == type).findFirst()
+                .orElseThrow(PatentComponentNotFoundException::new);
+    }
 
     @OneToMany(mappedBy = "id.patent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MultiComponent> multiComponents;
+    public List<MultiComponent> getMultiComponentsByType(MultiComponentType type) {
+        return multiComponents.stream().filter(it -> it.getId().getMultiComponentType() == type).collect(Collectors.toList());
+    }
+    public MultiComponent getMultiComponentByTypeAndName(MultiComponentType type, String identifier) {
+        return getMultiComponentsByType(type).stream().filter(it -> it.getId().getComponentIdentifier().equals(identifier)).findFirst()
+                .orElseThrow(PatentComponentNotFoundException::new);
+    }
 }
