@@ -1,5 +1,46 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="editor">
 <!--@thymesVar id="patent" type="com.ericlee.pstudio.alpha.domain.patent.entity.Patent"-->
+<br>
+<div class="container-fluid" th:with="ACCESS=${T(com.ericlee.pstudio.alpha.domain.patent.type.SingleComponentType).SUMMARY}">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        let editor = null
+        window.addEventListener('load', function () {
+            editor = new Quill('#FORM_SINGLE_[[${ACCESS.ordinal()}]]', {
+                theme: 'snow',
+                modules: {
+                    formula: true,
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        ['formula']
+                    ]
+                },
+                placeholder: '내용을 입력하세요'
+            });
+            axios.get('/edit-patent/[[${patent.getId()}]]/single/[[${ACCESS.ordinal()}]]').then((response) => {
+                editor.setContents(response.data)
+            })
+        })
+        /*]]>*/
+    </script>
+    <div class="row mb-3">
+        <div class="mb-3" style="display: grid">
+            <h2 class="h2">요약서</h2>
+            <div th:id="|FORM_SINGLE_${ACCESS.ordinal()}|">
 
+            </div>
+        </div>
+        <div class="mb-3" style="text-align: end">
+            <br>
+            <button th:onclick="|save_single(editor.getContents(), ${ACCESS.ordinal()})|"
+                    class="btn btn-outline-primary align-self-end">변경사항 저장</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <h2 class="h2">대표도 설정</h2>
+
+    </div>
+</div>
 </html>
