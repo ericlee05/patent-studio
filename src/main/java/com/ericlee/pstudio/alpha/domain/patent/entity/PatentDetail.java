@@ -1,10 +1,7 @@
 package com.ericlee.pstudio.alpha.domain.patent.entity;
 
 import com.ericlee.pstudio.alpha.domain.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -15,8 +12,10 @@ import java.time.LocalDateTime;
 @Getter @Builder
 @Embeddable
 public class PatentDetail {
+    @Setter
     private LocalDateTime lastModified;
 
+    @Setter
     @ManyToOne
     @JoinColumn
     private User lastModifier;
