@@ -28,10 +28,34 @@ public class PatentEditorService {
         Patent patent = patentRepository.findById(patentId)
                 .orElseThrow(PatentNotFoundException::new);
 
-        if(!patent.getOrganization().getUsers().contains(actionUser))
-            throw new PatentAccessDeniedException();
-
         model.addAttribute("title", String.format("수정 '%s'", patent.getKoreanName()));
         model.addAttribute("patent", patent);
+    }
+
+    @ValidPatentAccessAspect.ValidPatentAccess
+    @Transactional(readOnly = true)
+    public String getSingleComponent(@ValidPatentAccessAspect.PatentId Long patentId, Integer typeOrdinal) {
+        Patent patent = patentRepository.findById(patentId)
+                .orElseThrow(PatentNotFoundException::new);
+
+        SingleComponentType type = Arrays.stream(SingleComponentType.values()).filter(it -> it.ordinal() == typeOrdinal).findFirst()
+                .orElseThrow(PatentComponentNotFoundException::new);
+
+        return patent.getSingleComponentByType(type).getContent();
+    }
+
+    @ValidPatentAccessAspect.ValidPatentAccess
+    @Transactional
+    public void updateSingleComponent(@ValidPatentAccessAspect.PatentId Long patentId, Integer typeOrdinal, String jsonData) {
+        User user = userFacade.queryCurrentUser(true)
+                .orElseThrow(UnauthorizedUserException::new);
+
+        Patent patent = patentRepository.findById(patentId)
+                .orElseThrow(PatentNotFoundException::new);
+
+        SingleComponentType type = Arrays.stream(SingleComponentType.values()).filter(it -> it.ordinal() == typeOrdinal).findFirst()
+                .orElseThrow(PatentComponentNotFoundException::new);
+
+        patent.getSingleComponentByType(type).update(user, jsonData);
     }
 }
