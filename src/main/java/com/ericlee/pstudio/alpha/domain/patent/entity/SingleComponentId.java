@@ -2,13 +2,14 @@ package com.ericlee.pstudio.alpha.domain.patent.entity;
 
 import com.ericlee.pstudio.alpha.domain.patent.type.SingleComponentType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@AllArgsConstructor
+@AllArgsConstructor @Builder
 @NoArgsConstructor
 @Getter
 @Embeddable
