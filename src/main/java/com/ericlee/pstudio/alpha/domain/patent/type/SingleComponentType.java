@@ -11,4 +11,11 @@ public enum SingleComponentType {
     SUMMARY("요약");
 
     private final String description;
+
+    public static SingleComponentType getByName(String name) {
+        for (SingleComponentType type : SingleComponentType.values()) {
+            if(type.name().equals(name)) return type;
+        }
+        return null;
+    }
 }
