@@ -1,5 +1,33 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="editor">
 <!--@thymesVar id="patent" type="com.ericlee.pstudio.alpha.domain.patent.entity.Patent"-->
+<br>
+
+<!-- 기술분야 -->
+<div th:replace="patent/editors/component/editor_single_component :: component (ACCESS='TECHNOLOGY_CATEGORY')"></div>
+<hr>
+
+<!-- 발명의 배경이 되는 기술 -->
+<hr>
+
+<!-- 특허문헌 및 비특허문헌 -->
+<hr>
+
+<!-- 해결하고자 하는 과제 -->
+<div th:replace="patent/editors/component/editor_single_component :: component (ACCESS='PROBLEM_TO_SOLVE')"></div>
+<hr>
+
+<!-- 과제의 해결 수단 -->
+<hr>
+
+<!-- 발명의 효과 -->
+<div th:replace="patent/editors/component/editor_single_component :: component (ACCESS='EFFECT_OF_INVENTION')"></div>
+<hr>
+
+<!-- 발명을 실시하기 위한 구체적인 내용 -->
+<hr>
+
+<!-- 부호의 설명 -->
+<hr>
 
 </html>
