@@ -21,6 +21,7 @@ repositories {
 dependencies {
     // Framework
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -38,8 +39,10 @@ dependencies {
     // Infra
     implementation 'kr.dogfoot:hwplib:1.1.1'
     testImplementation 'kr.dogfoot:hwplib:1.1.1'
-    implementation fileTree('libs')
-    testImplementation fileTree('libs')
+    implementation files('libs/lsh.jar')
+    testImplementation files('libs/lsh.jar')
+    implementation files('libs/reflcrypt-1.0-ALPHA.jar')
+    testImplementation files('libs/reflcrypt-1.0-ALPHA.jar')
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

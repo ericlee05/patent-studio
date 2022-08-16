@@ -9,6 +9,9 @@ import com.ericlee.pstudio.alpha.domain.user.entity.User;
 import com.ericlee.pstudio.alpha.domain.user.exception.UnauthorizedUserException;
 import com.ericlee.pstudio.alpha.domain.user.facade.UserFacade;
 import com.ericlee.pstudio.alpha.global.aop.ValidPatentAccessAspect;
+import com.swcns.reflcrypt.annotation.DecryptReturns;
+import com.swcns.reflcrypt.annotation.EncryptParams;
+import com.swcns.reflcrypt.annotation.SecurityParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +35,7 @@ public class PatentEditorService {
         model.addAttribute("patent", patent);
     }
 
+    @DecryptReturns
     @ValidPatentAccessAspect.ValidPatentAccess
     @Transactional(readOnly = true)
     public String getSingleComponent(@ValidPatentAccessAspect.PatentId Long patentId, Integer typeOrdinal) {
@@ -44,9 +48,10 @@ public class PatentEditorService {
         return patent.getSingleComponentByType(type).getContent();
     }
 
+    @EncryptParams
     @ValidPatentAccessAspect.ValidPatentAccess
     @Transactional
-    public void updateSingleComponent(@ValidPatentAccessAspect.PatentId Long patentId, Integer typeOrdinal, String jsonData) {
+    public void updateSingleComponent(@ValidPatentAccessAspect.PatentId Long patentId, Integer typeOrdinal, @SecurityParam String jsonData) {
         User user = userFacade.queryCurrentUser(true)
                 .orElseThrow(UnauthorizedUserException::new);
 

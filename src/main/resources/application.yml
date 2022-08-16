@@ -11,3 +11,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+reflcrypt:
+  algorithm: AES/CBC/PKCS5Padding
+  key: test
+  iv: AAAABBBBCCCCDDDD
+  hash: ABCD

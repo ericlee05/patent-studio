@@ -13,6 +13,7 @@ import com.ericlee.pstudio.alpha.domain.user.entity.User;
 import com.ericlee.pstudio.alpha.domain.user.exception.UnauthorizedUserException;
 import com.ericlee.pstudio.alpha.domain.user.facade.UserFacade;
 import com.ericlee.pstudio.alpha.global.utils.HttpUtil;
+import com.swcns.reflcrypt.util.ObjectEncryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,12 +31,13 @@ public class PatentSimpleService {
     private final PatentRepository patentRepository;
     private final UserFacade userFacade;
     private final HttpUtil httpUtil;
+    private final ObjectEncryptor objectEncryptor;
 
     private List<SingleComponent> getNecessaryComponents(Patent patent) {
         return Arrays.stream(SingleComponentType.values())
                 .map(type -> SingleComponent.builder()
                         .id(SingleComponentId.builder().singleComponentType(type).patent(patent).build())
-                        .content(String.format("%s에 대해 작성해주세요", type.getDescription()))
+                        .content(objectEncryptor.getEncryptedObject(String.format("%s에 대해 작성해주세요", type.getDescription())))
                         .build())
                 .collect(Collectors.toList());
     }
