@@ -37,6 +37,68 @@
         alert("변경사항이 저장되었습니다")
     }
 
+    let editors_multi = new Map()
+    function save_multi(ordinal) {
+        let request = editors_multi.get(ordinal).map(it => {
+            console.log(it)
+            let obj = {
+                identifier: document.getElementById(`#TITLE_MULTI_${ordinal}_${it.editorName}`).value,
+                content: JSON.stringify(it.quill.getContents())
+            }
+            return obj
+        })
+
+        console.log('send data: ' + JSON.stringify(request))
+
+        axios.post('/edit-patent/[[${patent.getId()}]]/multi/' + ordinal, JSON.stringify(request), { headers: { 'content-type': 'application/json' } })
+        alert("변경사항이 저장되었습니다")
+    }
+
+    function add_multi_component(ordinal, identifier, content) {
+        if(!editors_multi.has(ordinal)) editors_multi.set(ordinal, [])
+        if(identifier == '') identifier = `새 구성요소 ${editors_multi.get(ordinal).length + 1}`
+
+        let editorName = Date.now()
+        let field = {
+            identifier: identifier, content: content, editorName: editorName
+        }
+
+        let componentElement = document.createElement('li')
+        componentElement.setAttribute('id', `component_editor_block_${editorName}`)
+        componentElement.setAttribute('class', 'list-group-item d-flex justify-content-between align-items-start')
+        document.getElementById(`editors_${ordinal}`).appendChild(componentElement)
+        componentElement.innerHTML = document.getElementById('editors_template_block_' + ordinal).innerHTML
+        componentElement.querySelector("input").setAttribute('id', `#TITLE_MULTI_${ordinal}_${editorName}`)
+        componentElement.querySelector("input").setAttribute('value', identifier)
+        componentElement.children[1].setAttribute('onclick', `remove_multi_component('${ordinal}', '${editorName}')`)
+
+        componentElement.children[0].children[1]
+            .setAttribute('id', `FORM_MULTI_${ordinal}_${editorName}`)
+
+        let quill = new Quill(`#FORM_MULTI_${ordinal}_${editorName}`, {
+            theme: 'snow',
+            modules: {
+                formula: true,
+                toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    ['formula']
+                ]
+            },
+            placeholder: '내용을 입력하세요'
+        })
+        try {
+            quill.setContents(JSON.parse(content))
+        }catch(ex) {}
+        field['quill'] = quill
+        editors_multi.get(ordinal).push(field)
+    }
+
+    function remove_multi_component(ordinal, editorName) {
+        let found = editors_multi.get(ordinal).filter((val) => val.editorName == editorName)[0]
+        editors_multi.set(ordinal, editors_multi.get(ordinal).filter((val) => val.editorName != editorName))
+        document.getElementById(`component_editor_block_${editorName}`).remove()
+    }
+
     /*]]>*/
 
     window.onbeforeunload = function() { return "Would you really like to close your browser?"; }

@@ -13,4 +13,11 @@ public enum MultiComponentType {
     DESCRIPTION_FOR_SYMBOL("부호의 설명");
 
     private final String description;
+
+    public static MultiComponentType getByName(String name) {
+        for (MultiComponentType type : MultiComponentType.values()) {
+            if(type.name().equals(name)) return type;
+        }
+        return null;
+    }
 }

@@ -1,14 +1,12 @@
 package com.ericlee.pstudio.alpha.domain.patent.entity;
 
 import com.ericlee.pstudio.alpha.domain.patent.type.MultiComponentType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@AllArgsConstructor
+@AllArgsConstructor @Builder
 @NoArgsConstructor
 @Getter
 @Embeddable
@@ -17,7 +15,8 @@ public class MultiComponentId implements Serializable {
     @JoinColumn
     private Patent patent;
 
-    @Column(columnDefinition = "VARCHAR(6)", nullable = false)
+    @Setter
+    @Column(columnDefinition = "VARCHAR(8)", nullable = false)
     private String componentIdentifier;
 
     @Enumerated(EnumType.STRING)

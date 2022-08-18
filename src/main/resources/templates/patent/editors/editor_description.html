@@ -8,9 +8,12 @@
 <hr>
 
 <!-- 발명의 배경이 되는 기술 -->
+<div th:replace="patent/editors/component/editor_multi_component :: component (ACCESS='BASEMENT_OF_INVENTION')"></div>
 <hr>
 
 <!-- 특허문헌 및 비특허문헌 -->
+<div th:replace="patent/editors/component/editor_multi_component :: component (ACCESS='PATENT_REFERENCE')"></div>
+<div th:replace="patent/editors/component/editor_multi_component :: component (ACCESS='NON_PATENT_REFERENCE')"></div>
 <hr>
 
 <!-- 해결하고자 하는 과제 -->
@@ -18,6 +21,7 @@
 <hr>
 
 <!-- 과제의 해결 수단 -->
+<div th:replace="patent/editors/component/editor_multi_component :: component (ACCESS='SOLUTION_FOR_PROBLEM')"></div>
 <hr>
 
 <!-- 발명의 효과 -->
@@ -25,9 +29,11 @@
 <hr>
 
 <!-- 발명을 실시하기 위한 구체적인 내용 -->
+<div th:replace="patent/editors/component/editor_multi_component :: component (ACCESS='WAY_FOR_INVENTION')"></div>
 <hr>
 
 <!-- 부호의 설명 -->
+<div th:replace="patent/editors/component/editor_multi_component :: component (ACCESS='DESCRIPTION_FOR_SYMBOL')"></div>
 <hr>
 
 </html>

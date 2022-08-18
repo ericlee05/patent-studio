@@ -4,12 +4,15 @@ import com.ericlee.pstudio.alpha.domain.organization.entity.Organization;
 import com.ericlee.pstudio.alpha.domain.patent.exception.PatentComponentNotFoundException;
 import com.ericlee.pstudio.alpha.domain.patent.type.MultiComponentType;
 import com.ericlee.pstudio.alpha.domain.patent.type.SingleComponentType;
+import com.ericlee.pstudio.alpha.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,8 +54,17 @@ public class Patent {
 
     @OneToMany(mappedBy = "id.patent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MultiComponent> multiComponents;
+    public void updateMultiComponents(User modifier, List<MultiComponent> components) {
+        getMultiComponents().addAll(components);
+
+        getDetail().setLastModified(LocalDateTime.now());
+        getDetail().setLastModifier(modifier);
+    }
     public List<MultiComponent> getMultiComponentsByType(MultiComponentType type) {
-        return multiComponents.stream().filter(it -> it.getId().getMultiComponentType() == type).collect(Collectors.toList());
+        return multiComponents.stream()
+                .filter(it -> it.getId().getMultiComponentType() == type)
+                .sorted(Comparator.comparingInt(MultiComponent::getOrder))
+                .collect(Collectors.toList());
     }
     public MultiComponent getMultiComponentByTypeAndName(MultiComponentType type, String identifier) {
         return getMultiComponentsByType(type).stream().filter(it -> it.getId().getComponentIdentifier().equals(identifier)).findFirst()
