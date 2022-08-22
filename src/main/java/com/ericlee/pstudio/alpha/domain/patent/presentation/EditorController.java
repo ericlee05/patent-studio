@@ -50,4 +50,9 @@ public class EditorController {
     public void deleteDrawing(@PathVariable("patent-id") Long patentId, @PathVariable("drawing-identifier") Long identifier, HttpServletResponse response) {
         editorService.deleteDrawing(patentId, identifier, response);
     }
+
+    @PatchMapping("/{patent-id}/drawings/{drawing-identifier}/representative")
+    public void setDrawingAsRepresentative(@PathVariable("patent-id") Long patentId, @PathVariable("drawing-identifier") Long identifier) {
+        editorService.setDrawingAsRepresentative(patentId, identifier);
+    }
 }

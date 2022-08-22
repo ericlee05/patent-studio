@@ -4,7 +4,35 @@
 <br>
 <div th:replace="patent/editors/component/editor_single_component :: component (ACCESS='SUMMARY')"></div>
 <hr/>
+<script>
+    /*<![CDATA[*/
+
+    let selectedDrawingId = null;
+    function viewDrawing(id) {
+        console.log('changed! : ' + this)
+        selectedDrawingId = id
+        document.getElementById('summaryDrawingViewer').setAttribute('src', "/patents/[[${patent.getId()}]]/drawings/" + id)
+    }
+
+    function setDrawingAsRepresentative() {
+        axios.patch("/edit-patent/[[${patent.getId()}]]/drawings/" + selectedDrawingId + "/representative")
+        alert("대표 도면이 변경되었습니다.")
+    }
+
+    /*]]>*/
+</script>
 <div class="container-fluid">
     <h2 class="h2">대표도 설정</h2>
+
+    <div class="container-fluid">
+        <img th:id="summaryDrawingViewer" th:if="${patent.getRepresentativeDrawing().isEmpty()}" class="img-fluid"/>
+        <img th:id="summaryDrawingViewer" th:if="${patent.getRepresentativeDrawing().isPresent()}" class="img-fluid" th:src="|/patents/${patent.getId()}/drawings/${patent.getRepresentativeDrawing().get().getId().getDrawingId()}|"/>
+        <select class="form-select" aria-label="Default select example" onchange="viewDrawing(this.selectedOptions[0].value)">
+            <option th:if="${patent.getRepresentativeDrawing().isEmpty()}" selected>선택하세요</option>
+            <option th:each="drawing: ${patent.getDrawings()}" th:value="${drawing.getId().getDrawingId()}" th:text="${drawing.getIdentifier()}" th:selected="${drawing.isRepresentative()}"></option>
+        </select>
+
+        <button class="btn btn-outline-primary" onclick="setDrawingAsRepresentative()">수정</button>
+    </div>
 </div>
 </html>

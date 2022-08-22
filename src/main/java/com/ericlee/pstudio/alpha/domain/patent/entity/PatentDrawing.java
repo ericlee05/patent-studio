@@ -29,6 +29,7 @@ public class PatentDrawing {
     @Lob
     private String description;
 
+    @Setter
     @Column(nullable = false)
     private boolean isRepresentative;
 

@@ -190,6 +190,23 @@ public class PatentEditorService {
 
     @ValidPatentAccessAspect.ValidPatentAccess
     @Transactional
+    public void setDrawingAsRepresentative(@ValidPatentAccessAspect.PatentId Long patentId, Long drawingId) {
+        User user = userFacade.queryCurrentUser(true)
+                .orElseThrow(UnauthorizedUserException::new);
+
+        Patent patent = patentRepository.findById(patentId)
+                .orElseThrow(PatentNotFoundException::new);
+
+        PatentDrawing drawing = patent.getDrawings().stream().filter(it -> it.getId().getDrawingId().equals(drawingId))
+                .findFirst()
+                .orElseThrow();
+
+        patent.getDrawings().forEach(drawingItem -> drawingItem.setRepresentative(false));
+        drawing.setRepresentative(true);
+    }
+
+    @ValidPatentAccessAspect.ValidPatentAccess
+    @Transactional
     public void deleteDrawing(@ValidPatentAccessAspect.PatentId Long patentId, Long drawingId, HttpServletResponse response) {
         Patent patent = patentRepository.findById(patentId)
                 .orElseThrow(PatentNotFoundException::new);

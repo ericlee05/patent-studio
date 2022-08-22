@@ -14,6 +14,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -41,6 +42,10 @@ public class Patent {
 
     @OneToMany(mappedBy = "id.patent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PatentDrawing> drawings;
+
+    public Optional<PatentDrawing> getRepresentativeDrawing() {
+        return getDrawings().stream().filter(PatentDrawing::isRepresentative).findFirst();
+    }
 
     @OneToMany(mappedBy = "patent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Claim> claims;
