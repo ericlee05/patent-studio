@@ -8,6 +8,7 @@ import com.ericlee.pstudio.alpha.domain.patent.service.PatentSimpleService;
 import com.ericlee.pstudio.alpha.domain.patent.service.PatentViewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +69,12 @@ public class PatentController {
         patentEditorService.loadEditor(patentId, model);
         model.addAttribute("template", "patent/editor");
         return "global/dashboard_frame";
+    }
+
+    @ResponseBody
+    @GetMapping("/{patent-id}/drawings/{drawing-id}")
+    public ResponseEntity<byte[]> getDrawing(@PathVariable("patent-id") Long patentId, @PathVariable("drawing-id") Long drawingId) {
+        return patentEditorService.getDrawingFile(patentId, drawingId);
     }
 
 }

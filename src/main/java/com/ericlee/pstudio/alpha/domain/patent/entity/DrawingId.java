@@ -1,8 +1,6 @@
 package com.ericlee.pstudio.alpha.domain.patent.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -10,7 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @Builder
+@NoArgsConstructor
 @Getter
 @Embeddable
 public class DrawingId implements Serializable {
@@ -18,8 +17,7 @@ public class DrawingId implements Serializable {
     @JoinColumn
     private Patent patent;
 
-    @Column(columnDefinition = "VARCHAR(16)", nullable = false)
-    private String drawingId;
+    private Long drawingId;
 
     @Override
     public int hashCode() {

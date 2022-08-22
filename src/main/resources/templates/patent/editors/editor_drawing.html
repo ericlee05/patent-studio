@@ -1,5 +1,46 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="editor">
-<!--@thymesVar id="patent" type="com.ericlee.pstudio.alpha.domain.patent.entity.Patent"-->
 
+<br>
+<!--@thymesVar id="patent" type="com.ericlee.pstudio.alpha.domain.patent.entity.Patent"-->
+<script>
+    /*<![CDATA[*/
+
+    function deleteDrawing(identifier) {
+        axios.delete("/edit-patent/[[${patent.getId()}]]/drawings/" + identifier);
+        alert("도면이 삭제되었습니다.")
+        window.location.reload()
+    }
+
+    /*]]>*/
+</script>
+<div class="container-fluid">
+    <ol class="list-group list-group-numbered">
+        <li class="list-group-item d-flex justify-content-between align-items-start" th:each="drawing : ${patent.getDrawings()}">
+            <form class="ms-2 me-auto" th:action="|/edit-patent/${patent.getId()}/drawings/${drawing.getId().getDrawingId()}|" method="post">
+                <div>
+                    <span th:if="${drawing.isRepresentative()}" class="badge bg-primary rounded-pill">대표도</span>
+                    <input name="identifier" class="fw-bold form-control-plaintext" type="text" th:value="${drawing.getIdentifier()}"/>
+                </div>
+                <img class="img-fluid" th:src="|/patents/${patent.getId()}/drawings/${drawing.getId().getDrawingId()}|"/>
+                <textarea name="description" class="form-control" th:text="${drawing.getDescription()}"></textarea>
+                <input type="submit" class="btn btn-outline-primary" value="수정">
+            </form>
+            <span class="badge bg-danger rounded-pill" onclick="deleteDrawing(this.getAttribute('data-drawing-id'))" th:data-drawing-id="${drawing.getId().getDrawingId()}" style="cursor: pointer;">X</span>
+        </li>
+    </ol>
+
+    <hr>
+
+    <div class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="input-group mb-3">
+            <form th:action="|/edit-patent/${patent.getId()}/drawings|" method="post" enctype="multipart/form-data">
+                <input class="form-control" type="file" name="drawing" accept=".jpg, .jpeg, .png">
+                <input class="form-control btn-outline-primary" type="submit">
+            </form>
+        </div>
+    </div>
+
+    <br>
+</div>
 </html>
