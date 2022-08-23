@@ -6,7 +6,5 @@ import lombok.Getter;
 
 @AllArgsConstructor @Builder @Getter
 public class PatentDetailResponse {
-    private Long patentId;
-    private String nameWithKorean;
-    private String nameWithEnglish;
+    private String patentSummary;
 }

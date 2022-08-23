@@ -1,25 +1,59 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="content">
-<!--@thymesVar id="patent" type="com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.PatentResponse"-->
+<!--@thymesVar id="patent" type="com.ericlee.pstudio.alpha.domain.patent.entity.Patent"-->
+<!--@thymesVar id="patentSummary" type="com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.PatentDetailResponse"-->
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <div>
-        <h1 class="h2" th:text="${patent.nameWithKorean}"></h1>
-        <h4 class="h4" style="color: gray" th:text="${patent.nameWithEnglish}"></h4>
+        <h1 class="h2" th:text="${patent.getKoreanName()}"></h1>
+        <h4 class="h4" style="color: gray" th:text="${patent.getEnglishName()}"></h4>
     </div>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-            <a class="btn btn-outline-success" th:href="|/patents/${patent.getPatentId()}/hwp|">출력</a>
-            <a class="btn btn-outline-primary" th:href="|/patents/${patent.getPatentId()}/editor|">편집</a>
-            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#patentDeleteionModal" th:data-bs-id="${patent.patentId}" th:data-bs-name="${patent.nameWithKorean}">삭제</button>
+            <a class="btn btn-outline-success" th:href="|/patents/${patent.getId()}/hwp|">출력</a>
+            <a class="btn btn-outline-primary" th:href="|/patents/${patent.getId()}/editor|">편집</a>
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#patentDeleteionModal" th:data-bs-id="${patent.getId()}" th:data-bs-name="${patent.getKoreanName()}">삭제</button>
         </div>
     </div>
 </div>
 <br>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const summaryContentJson = JSON.parse(/*[[${patentSummary.getPatentSummary()}]]*/).ops
 
+    window.addEventListener('load', () => {
+        console.log(summaryContentJson)
+        summaryContentJson.forEach(element => {
+            let node = ""
+            if(typeof element.insert == 'string') {
+                node = element.insert.replace("\n", '</br>')
+
+                if('attributes' in element) {
+                    if('bold' in element.attributes && element.attributes.bold) node = `<b>${node}</b>`
+                    if('underline' in element.attributes && element.attributes.underline) node = `<u>${node}</u>`
+                    if('italic' in element.attributes && element.attributes.italic) node = `<i>${node}</i>`
+                }
+
+            } else {
+                node = "<strong style='color: #ff5d5d'>{미지원 요소}</strong>"
+            }
+
+            document.getElementById("summaryContent").innerHTML += node
+        })
+
+    })
+
+    /*]]>*/
+</script>
 <div class="container-fluid">
     <div class="row">
         <div class="col">
             <h2 class="h3">개요</h2>
+
+            <div class="card">
+                <div class="card-body">
+                    <p id="summaryContent"></p>
+                </div>
+            </div>
         </div>
         <div class="col">
             <h2 class="h3">청구항 목록</h2>
@@ -52,9 +86,52 @@
     <div class="row">
         <div class="col">
             <h2 class="h3">대표도</h2>
+            <div th:if="${patent.getRepresentativeDrawing().isPresent()}">
+                <img class="img-fluid" th:src="|/patents/${patent.getId()}/drawings/${patent.getRepresentativeDrawing().get().getId().getDrawingId()}|">
+                <figure>
+                    <blockquote class="blockquote" th:text="${patent.getRepresentativeDrawing().get().getIdentifier()}"></blockquote>
+                    <figcaption class="blockquote-footer" th:text="${patent.getRepresentativeDrawing().get().getDescription()}"></figcaption>
+                </figure>
+            </div>
         </div>
         <div class="col">
-            <h2 class="h3">무언가..?</h2>
+            <h2 class="h3">출원 수수료</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">수수료 종류</th>
+                    <th scope="col">상세</th>
+                    <th scope="col">수수료</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">특허출원료</th>
+                    <td>18면</td>
+                    <td>66,000원</td>
+                </tr>
+                <tr>
+                    <th scope="row">심사청구료</th>
+                    <td>4항</td>
+                    <td>319,000원</td>
+                </tr>
+                <tr>
+                    <th scope="row">합계</th>
+                    <td>-</td>
+                    <td>385,000원</td>
+                </tr>
+                <tr>
+                    <th scope="row">수수료 감면/면제</th>
+                    <td>만 6세 이상 만 19세 미만인 자</td>
+                    <td>-385,000원</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="table-active">최종 금액</th>
+                    <td class="table-active">-</td>
+                    <td class="table-active">0원</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
