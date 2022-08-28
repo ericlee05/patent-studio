@@ -102,6 +102,7 @@ public class PatentEditorService {
         return patent.getMultiComponentsByType(type).stream().map(it -> objectDecryptor.getDecryptedObject(
                 new MultiComponentDto(it.getId().getComponentIdentifier(), it.getContent())
                 ))
+                .sorted(Comparator.comparing(MultiComponentDto::getIdentifier))
                 .collect(Collectors.toList());
     }
 
