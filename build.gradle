@@ -41,8 +41,8 @@ dependencies {
     testImplementation 'kr.dogfoot:hwplib:1.1.1'
     implementation files('libs/lsh.jar')
     testImplementation files('libs/lsh.jar')
-    implementation files('libs/reflcrypt-1.0-ALPHA.jar')
-    testImplementation files('libs/reflcrypt-1.0-ALPHA.jar')
+    implementation files('libs/reflcrypt-1.0.jar')
+    testImplementation files('libs/reflcrypt-1.0.jar')
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
