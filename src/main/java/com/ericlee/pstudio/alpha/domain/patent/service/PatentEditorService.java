@@ -5,6 +5,8 @@ import com.ericlee.pstudio.alpha.domain.patent.exception.PatentComponentNotFound
 import com.ericlee.pstudio.alpha.domain.patent.exception.PatentNotFoundException;
 import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.common.MultiComponentDto;
 import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.request.DrawingUpdateRequest;
+import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.ClaimResponse;
+import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.ClaimUpdateRequest;
 import com.ericlee.pstudio.alpha.domain.patent.repository.MultiComponentRepository;
 import com.ericlee.pstudio.alpha.domain.patent.repository.PatentRepository;
 import com.ericlee.pstudio.alpha.domain.patent.type.MultiComponentType;
@@ -34,6 +36,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -217,5 +220,36 @@ public class PatentEditorService {
         patent.getDrawings().remove(drawing);
 
         httpUtil.redirectTo(response, String.format("/patents/%d/editor", patentId));
+    }
+
+    @ValidPatentAccessAspect.ValidPatentAccess
+    @Transactional(readOnly = true)
+    public List<ClaimResponse> getClaims(@ValidPatentAccessAspect.PatentId Long patentId) {
+        Patent patent = patentRepository.findById(patentId)
+                .orElseThrow(PatentNotFoundException::new);
+
+        return patent.getClaims().stream()
+                .sorted(Comparator.comparingInt(it -> it.getNumber()))
+                .map(it -> ClaimResponse.builder()
+                        .content(objectDecryptor.getDecryptedObject(it.getContent()))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @ValidPatentAccessAspect.ValidPatentAccess
+    @Transactional
+    public void updateClaims(@ValidPatentAccessAspect.PatentId Long patentId, ClaimUpdateRequest request) {
+        Patent patent = patentRepository.findById(patentId)
+                .orElseThrow(PatentNotFoundException::new);
+
+        List<Claim> claims = request.getContent().stream().map(it -> Claim.builder()
+                        .parentClaims(new ArrayList<>())
+                        .childClaims(new ArrayList<>())
+                        .number(request.getContent().indexOf(it))
+                        .patent(patent)
+                        .content(objectEncryptor.getEncryptedObject(it))
+                        .build())
+                .collect(Collectors.toList());
+        patent.getClaims().addAll(claims);
     }
 }

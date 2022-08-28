@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @Entity
 public class Claim {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long claimId;
 
@@ -33,4 +34,9 @@ public class Claim {
 
     @OneToMany(mappedBy = "id.parentClaim", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClaimReference> childClaims;
+
+    @Override
+    public String toString() {
+        return number.toString();
+    }
 }

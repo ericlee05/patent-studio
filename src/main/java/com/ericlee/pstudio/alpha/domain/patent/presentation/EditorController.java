@@ -2,7 +2,10 @@ package com.ericlee.pstudio.alpha.domain.patent.presentation;
 
 import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.common.MultiComponentDto;
 import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.request.DrawingUpdateRequest;
+import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.ClaimResponse;
+import com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.ClaimUpdateRequest;
 import com.ericlee.pstudio.alpha.domain.patent.service.PatentEditorService;
+import com.swcns.reflcrypt.annotation.SecurityParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -55,4 +58,15 @@ public class EditorController {
     public void setDrawingAsRepresentative(@PathVariable("patent-id") Long patentId, @PathVariable("drawing-identifier") Long identifier) {
         editorService.setDrawingAsRepresentative(patentId, identifier);
     }
+
+    @GetMapping("/{patent-id}/claims")
+    public List<ClaimResponse> getClaims(@PathVariable("patent-id") Long patentId) {
+        return editorService.getClaims(patentId);
+    }
+
+    @PostMapping("/{patent-id}/claims")
+    public void updateClaims(@PathVariable("patent-id") Long patentId, @RequestBody ClaimUpdateRequest request) {
+        editorService.updateClaims(patentId, request);
+    }
+
 }
