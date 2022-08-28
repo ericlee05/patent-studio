@@ -2,6 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="content">
 <!--@thymesVar id="patent" type="com.ericlee.pstudio.alpha.domain.patent.entity.Patent"-->
 <!--@thymesVar id="patentSummary" type="com.ericlee.pstudio.alpha.domain.patent.presentation.dto.response.PatentDetailResponse"-->
+<!--@thymesVar id="objectDecryptor" type="com.swcns.reflcrypt.util.ObjectDecryptor"-->
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <div>
         <h1 class="h2" th:text="${patent.getKoreanName()}"></h1>
@@ -57,27 +58,46 @@
         </div>
         <div class="col">
             <h2 class="h3">청구항 목록</h2>
-            <ol class="list-group list-group-numbered">
-                <li class="list-group-item d-flex justify-content-between align-items-start">
+            <ol class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-start" th:each="claim : ${patent.getClaims()}">
                     <div class="ms-2 me-auto">
-                        <div class="fw-bold">Subheading</div>
-                        Cras justo odio
+                        <div class="fw-bold" th:text="|청구항 ${claim.getNumber() + 1}|"></div>
+                        <div th:id="|claim_text_${claim.getNumber()}|"></div>
                     </div>
-                    <span class="badge bg-primary rounded-pill">14</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Subheading</div>
-                        Cras justo odio
-                    </div>
-                    <span class="badge bg-primary rounded-pill">14</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Subheading</div>
-                        Cras justo odio
-                    </div>
-                    <span class="badge bg-primary rounded-pill">14</span>
+                    <span class="badge bg-primary rounded-pill" th:if="${claim.getParentClaims().size()} > 0" th:text="|부모항: 청구항 ${T(com.ericlee.pstudio.alpha.global.utils.StringUtil).joinStringWithComma(claim.getParentClaims())}|"></span>
+                    <span class="badge bg-primary rounded-pill" th:if="${claim.getChildClaims().size()} > 0" th:text="|종속항 ${claim.getChildClaims().size()}개|"></span>
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        const claimJson_/*[[${claim.getNumber()}]]*/
+                            = JSON.parse(/*[[${objectDecryptor.getDecryptedObject(claim.getContent())}]]*/).ops
+
+                        window.addEventListener('load', () => {
+                            console.log(
+                                claimJson_/*[[${claim.getNumber()}]]*/
+                            )
+                            claimJson_/*[[${claim.getNumber()}]]*/
+                                .forEach(element => {
+                                let node = ""
+                                if(typeof element.insert == 'string') {
+                                    node = element.insert.replace("\n", '</br>')
+
+                                    if('attributes' in element) {
+                                        if('bold' in element.attributes && element.attributes.bold) node = `<b>${node}</b>`
+                                        if('underline' in element.attributes && element.attributes.underline) node = `<u>${node}</u>`
+                                        if('italic' in element.attributes && element.attributes.italic) node = `<i>${node}</i>`
+                                    }
+
+                                } else {
+                                    node = "<strong style='color: #ff5d5d'>{미지원 요소}</strong>"
+                                }
+
+                                document.getElementById("claim_text_[[${claim.getNumber()}]]").innerHTML += node
+                            })
+
+                        })
+
+                        /*]]>*/
+                    </script>
                 </li>
             </ol>
         </div>

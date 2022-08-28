@@ -68,5 +68,6 @@ public class PatentViewService {
         model.addAttribute("title", patent.getKoreanName());
         model.addAttribute("patent", patent);
         model.addAttribute("patentSummary", patentSummary);
+        model.addAttribute("objectDecryptor", objectDecryptor);
     }
 }
